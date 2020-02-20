@@ -96,6 +96,11 @@
 		    <artifactId>ngdbc</artifactId>
     <version>2.4.70</version>
 		</dependency>
+				<dependency>
+			<groupId>io.pivotal.cfenv</groupId>
+			<artifactId>java-cfenv-boot</artifactId>
+			<version>2.1.0.RELEASE</version>
+		</dependency>
 	</dependencies>
 	<profiles>
 		 <profile>

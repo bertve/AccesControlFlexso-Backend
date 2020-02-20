@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 	@GetMapping
 	public String getKeyAPI() {
-		return "redirect:/api/key";
+		return "redirect:/api";
+	}
+	
+	@GetMapping("/api")
+	public String test(){
+		return "api is running";
 	}
 }
