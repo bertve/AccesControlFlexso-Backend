@@ -1,4 +1,4 @@
-package domain;
+package com.springBoot.keyAPI.domain;
 
 import java.io.Serializable;
 

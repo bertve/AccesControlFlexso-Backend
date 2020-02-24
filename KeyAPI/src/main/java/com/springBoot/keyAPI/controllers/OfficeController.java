@@ -1,4 +1,4 @@
-package com.springBoot.keyAPI;
+package com.springBoot.keyAPI.controllers;
 
 import java.util.List;
 
@@ -12,37 +12,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import domain.AuthorizedPerson;
-import services.AuthorizedPersonService;
+import com.springBoot.keyAPI.domain.*;
+import com.springBoot.keyAPI.services.OfficeService;
 
 @RestController
-@RequestMapping(value="/api/authorizedPerson")
-public class AuthorizedPersonController {
+@RequestMapping(value="/api/office")
+public class OfficeController {
+	
 	@Autowired
-	private AuthorizedPersonService service;
+	private OfficeService service;
 	
 	@GetMapping(value="/getAll")
-	public List<AuthorizedPerson> getAllAuthorizedPersons(){
+	public List<Office> getAllOffices(){
 		return service.getAll();
 	}
 	
 	@GetMapping(value="/{id}")
-	public AuthorizedPerson findById(@PathVariable long id) {
+	public Office findById(@PathVariable long id) {
 		return service.getById(id);
 	}
 	
 	@PostMapping(value="/add")
-	public boolean addCompany(@RequestBody AuthorizedPerson a) {
-		return service.add(a);
+	public boolean addOffice(@RequestBody Office o) {
+		return service.add(o);
 	}
 	
 	@DeleteMapping(value="/delete/{id}")
-	public boolean removeAuthorizedPerson(@PathVariable long id) {
+	public boolean removeOffice(@PathVariable long id) {
 		return service.remove(id);
 	}
 	
 	@PutMapping(value="/update")
-	public boolean updateAuthorizedPerson(@RequestBody AuthorizedPerson a) {
-		return service.update(a);
+	public boolean updateOffice(@RequestBody Office o) {
+		return service.update(o);
 	}
 }

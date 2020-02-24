@@ -1,12 +1,12 @@
-package services;
+package com.springBoot.keyAPI.services;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import domain.AuthorizedPerson;
-import repository.AuthorizedPersonRepository;
+import com.springBoot.keyAPI.domain.AuthorizedPerson;
+import com.springBoot.keyAPI.repository.AuthorizedPersonRepository;
 @Service
 public class AuthorizedPersonService implements IService<AuthorizedPerson> {
 

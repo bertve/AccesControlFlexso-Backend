@@ -1,4 +1,4 @@
-package domain;
+package com.springBoot.keyAPI.domain;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -15,16 +15,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table
-@NamedQueries({
-	@NamedQuery(name="Company.getAll",
-			query="SELECT * FROM Company")
-})
 public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private long companyId;
 	private String name;
 	@OneToMany(mappedBy="company")
 	private Set<Office> offices;

@@ -1,12 +1,12 @@
-package services;
+package com.springBoot.keyAPI.services;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import domain.Office;
-import repository.OfficeRepository;
+import com.springBoot.keyAPI.domain.Office;
+import com.springBoot.keyAPI.repository.OfficeRepository;
 @Service
 public class OfficeService implements IService<Office> {
 	

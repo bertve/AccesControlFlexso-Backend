@@ -1,4 +1,4 @@
-package services;
+package com.springBoot.keyAPI.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import domain.Company;
-import repository.CompanyRepository;
+import com.springBoot.keyAPI.domain.Company;
+import com.springBoot.keyAPI.repository.CompanyRepository;
 
 @Service
 public class CompanyService implements IService<Company>{

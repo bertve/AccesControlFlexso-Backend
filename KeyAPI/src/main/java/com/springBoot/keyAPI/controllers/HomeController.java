@@ -1,4 +1,4 @@
-package com.springBoot.keyAPI;
+package com.springBoot.keyAPI.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

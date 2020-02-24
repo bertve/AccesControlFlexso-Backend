@@ -1,4 +1,4 @@
-package domain;
+package com.springBoot.keyAPI.domain;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -15,18 +15,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table
-@NamedQueries({
-	@NamedQuery(name="AuthorizedPerson.getAll",
-			query="SELECT * FROM AuthorizedPerson"),
-	@NamedQuery(name="AuthorizedPerson.getByEmail",
-				query="SELECT a FROM AuthorizedPerson a WHERE a.email = :email")
-})
 public class AuthorizedPerson implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private long id;
+	private long personId;
 	private String firstName, lastName,email;
 	@ManyToMany(mappedBy="authorizedPersons")
 	public Set<Office> offices;
