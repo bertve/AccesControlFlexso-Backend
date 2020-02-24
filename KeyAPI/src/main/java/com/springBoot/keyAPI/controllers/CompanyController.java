@@ -46,4 +46,10 @@ public class CompanyController {
 	public boolean updateCompany(@RequestBody Company c) {
 		return service.update(c);
 	}
+	
+	@DeleteMapping(value="/deleteAll")
+	public void removeAllCompanies() {
+		service.removeAllCompanies();
+	}
+	
 }

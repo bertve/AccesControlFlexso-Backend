@@ -1,6 +1,7 @@
 package com.springBoot.keyAPI.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -27,11 +28,15 @@ public class Company implements Serializable {
 	public Company(String name) {
 		super();
 		this.name = name;
+		this.offices = new HashSet<>();
 	} 
 	
 	public void addOffice(Office o) {
 		offices.add(o);
 	}
 	
-	
+	public void removeOffice(Office o) {
+		offices.remove(o);
+	}
+		
 }
