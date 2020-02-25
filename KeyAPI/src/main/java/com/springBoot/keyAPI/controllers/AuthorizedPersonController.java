@@ -47,4 +47,9 @@ public class AuthorizedPersonController {
 		return service.update(a);
 	}
 	
+	@DeleteMapping(value="/deleteAll")
+	public boolean removeAllAuthorizedPersons() {
+		return service.removeAll();
+	}
+	
 }

@@ -46,4 +46,16 @@ public class OfficeController {
 	public boolean updateOffice(@RequestBody Office o) {
 		return service.update(o);
 	}
+	
+	@DeleteMapping(value="/deleteAll")
+	public boolean removeAllOffices() {
+		return service.removeAll();
+	}
+	
+	@PostMapping(value="{id}/authorizedPerson")
+	public boolean addAuthorizedPersonToOffice(@PathVariable long id,@RequestBody AuthorizedPerson a) {
+		Office o = service.getById(id);
+		o.addAuthorizedPerson(a);
+		return service.update(o);
+	}
 }

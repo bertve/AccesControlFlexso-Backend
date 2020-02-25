@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springBoot.keyAPI.domain.AuthorizedPerson;
+import com.springBoot.keyAPI.domain.Company;
 import com.springBoot.keyAPI.repository.AuthorizedPersonRepository;
 @Service
 public class AuthorizedPersonService implements IService<AuthorizedPerson> {
@@ -13,14 +14,12 @@ public class AuthorizedPersonService implements IService<AuthorizedPerson> {
 	@Autowired
 	private AuthorizedPersonRepository repo;
 	
-	@Override
 	public List<AuthorizedPerson> getAll() {
 		List<AuthorizedPerson> res = new ArrayList<>();
 		repo.findAll().forEach(res::add);
 		return res;
 	}
 
-	@Override
 	public boolean add(AuthorizedPerson item) {
 		try {
 			repo.save(item);
@@ -30,7 +29,6 @@ public class AuthorizedPersonService implements IService<AuthorizedPerson> {
 		}
 	}
 
-	@Override
 	public boolean remove(long id) {
 		AuthorizedPerson a = repo.findById(id).orElse(null);
 		if(a != null) {
@@ -40,15 +38,20 @@ public class AuthorizedPersonService implements IService<AuthorizedPerson> {
 		return false;
 	}
 
-	@Override
 	public AuthorizedPerson getById(long id) {
 		AuthorizedPerson a = repo.findById(id).orElse(null);
 		return a;	
 	}
 
-	@Override
 	public boolean update(AuthorizedPerson item) {
 		return this.add(item);
 	}
+
+	public boolean removeAll() {
+		this.repo.deleteAll();
+		List<AuthorizedPerson> res = new ArrayList<>();
+		repo.findAll().forEach(res::add);
+		return res.isEmpty()? true:false;	
+		}
 
 }

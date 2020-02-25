@@ -31,4 +31,15 @@ public class Office implements Serializable  {
 	inverseJoinColumns=@JoinColumn(name="personId"))
 	@JoinColumn()
 	private Set<AuthorizedPerson> authorizedPersons;	
+	
+	
+	public Office(Address address, Company company) {
+		super();
+		this.address = address;
+		this.company = company;
+	}
+
+	public void addAuthorizedPerson(AuthorizedPerson a) {
+		this.authorizedPersons.add(a);
+	}
 }

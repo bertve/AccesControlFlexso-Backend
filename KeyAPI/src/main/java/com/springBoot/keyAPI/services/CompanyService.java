@@ -11,17 +11,16 @@ import com.springBoot.keyAPI.repository.CompanyRepository;
 
 @Service
 public class CompanyService implements IService<Company>{
+	
 	@Autowired
 	private CompanyRepository companyRepo;
-
-	@Override
+	
 	public List<Company> getAll() {
 		List<Company> res = new ArrayList<>();
 		companyRepo.findAll().forEach(res::add);
 		return res;
 	}
 
-	@Override
 	public boolean add(Company item) {
 		try {
 			companyRepo.save(item);
@@ -29,9 +28,8 @@ public class CompanyService implements IService<Company>{
 		}catch(Exception e) {
 			return false;
 		}
-	}
+	}	
 
-	@Override
 	public boolean remove(long id) {
 		Company c = companyRepo.findById(id).orElse(null);
 		if(c != null) {
@@ -41,19 +39,20 @@ public class CompanyService implements IService<Company>{
 		return false;
 	}
 
-	@Override
 	public Company getById(long id) {
 		Company c = companyRepo.findById(id).orElse(null);
 		return c;
 	}
 
-	@Override
 	public boolean update(Company item) {
 		return this.add(item);
 	}
 	
-	public void removeAllCompanies() {
-		this.companyRepo.deleteAll();;
+	public boolean removeAll() {
+		this.companyRepo.deleteAll();
+		List<Company> res = new ArrayList<>();
+		companyRepo.findAll().forEach(res::add);
+		return res.isEmpty()? true:false;
 	}
 	
 }

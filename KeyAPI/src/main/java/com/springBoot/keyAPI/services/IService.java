@@ -8,4 +8,5 @@ public interface IService<T> {
 	public boolean remove(long id);
 	public T getById(long id);
 	public boolean update(T item);
+	public boolean removeAll();
 }

@@ -1,6 +1,7 @@
 package com.springBoot.keyAPI.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -24,5 +25,14 @@ public class AuthorizedPerson implements Serializable {
 	private String firstName, lastName,email;
 	@ManyToMany(mappedBy="authorizedPersons")
 	public Set<Office> offices;
+	public AuthorizedPerson(String firstName, String lastName, String email) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.offices = new HashSet<>();
+	}
+	
+	
 
 }
