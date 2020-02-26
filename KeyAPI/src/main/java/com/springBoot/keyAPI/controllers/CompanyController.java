@@ -20,12 +20,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
-@RequestMapping(value="/api/company")
+@RequestMapping(value="/api/companies")
 public class CompanyController {
 	@Autowired
 	private CompanyService service;
 	
-	@GetMapping(value="/getAll")
+	@GetMapping
 	public List<Company> getAllCompanies(){
 		return service.getAll();
 	}
@@ -35,31 +35,24 @@ public class CompanyController {
 		return service.getById(id);
 	}
 	
-	@PostMapping(value="/add")
+	@PostMapping
 	public boolean addCompany(@RequestBody Company c) {
 		return service.add(c);
 	}
 	
-	@DeleteMapping(value="/delete/{id}")
+	@DeleteMapping(value="/{id}")
 	public boolean removeCompany(@PathVariable long id) {
 		return service.remove(id);
 	}
 	
-	@PutMapping(value="/update")
+	@PutMapping
 	public boolean updateCompany(@RequestBody Company c) {
 		return service.update(c);
 	}
 	
-	@DeleteMapping(value="/deleteAll")
+	@DeleteMapping
 	public boolean removeAllCompanies() {
 		return service.removeAll();
 	}	
-	
-	@PostMapping(value="{id}/office")
-	public boolean addOfficeToCompany(@PathVariable long id,@RequestBody Office o) {
-		Company c = service.getById(id);
-		c.addOffice(o);
-		return service.update(c);
-	}
 	
 }

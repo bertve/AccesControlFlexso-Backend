@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.springBoot.keyAPI.domain.Company;
 import com.springBoot.keyAPI.domain.Office;
+import com.springBoot.keyAPI.repository.CompanyRepository;
 import com.springBoot.keyAPI.repository.OfficeRepository;
 @Service
 public class OfficeService implements IService<Office> {

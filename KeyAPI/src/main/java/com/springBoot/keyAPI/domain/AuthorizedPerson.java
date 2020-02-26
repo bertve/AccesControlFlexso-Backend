@@ -16,14 +16,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table
-public class AuthorizedPerson implements Serializable {
+public class AuthorizedPerson extends Audit implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private long personId;
 	private String firstName, lastName,email;
-	@ManyToMany(mappedBy="authorizedPersons")
+	@ManyToMany(mappedBy="authorizedPersons",cascade = CascadeType.PERSIST)
 	public Set<Office> offices;
 	public AuthorizedPerson(String firstName, String lastName, String email) {
 		super();

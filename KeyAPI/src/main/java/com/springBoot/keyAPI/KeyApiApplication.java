@@ -5,10 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class KeyApiApplication {
 
 	public static void main(String[] args) {

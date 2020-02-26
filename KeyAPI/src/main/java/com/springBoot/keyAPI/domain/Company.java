@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
-
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +16,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table
-public class Company implements Serializable {
+public class Company extends Audit implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long companyId;
+	@NotNull
+	@Column(unique=true)
 	private String name;
-	@OneToMany(mappedBy="company")
+	@OneToMany(mappedBy="company", cascade=CascadeType.ALL)
 	private Set<Office> offices;
 	public Company(String name) {
 		super();
@@ -31,12 +33,12 @@ public class Company implements Serializable {
 		this.offices = new HashSet<>();
 	} 
 	
-	public void addOffice(Office o) {
-		offices.add(o);
+	public Set<Office> getOffices() {
+		return offices;
+	}
+	public void setOffices(Set<Office> offices) {
+		this.offices = offices;
 	}
 	
-	public void removeOffice(Office o) {
-		offices.remove(o);
-	}
-		
+	
 }

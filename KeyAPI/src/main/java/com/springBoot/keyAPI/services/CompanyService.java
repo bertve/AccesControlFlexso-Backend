@@ -47,6 +47,7 @@ public class CompanyService implements IService<Company>{
 	public boolean update(Company item) {
 		return this.add(item);
 	}
+
 	
 	public boolean removeAll() {
 		this.companyRepo.deleteAll();

@@ -4,10 +4,16 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springBoot.keyAPI.domain.Address;
 
 @Entity
@@ -15,17 +21,23 @@ import com.springBoot.keyAPI.domain.Address;
 @Setter
 @NoArgsConstructor
 @Table
-public class Office implements Serializable  {
+public class Office extends Audit implements Serializable  {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long officeId;
+	
+	@NotNull
 	@Embedded
 	private Address address;
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="companyId")
+	
+	@ManyToOne(fetch=FetchType.LAZY,optional = false)
+	@JoinColumn(name="companyId",nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE )
+	@JsonIgnore
 	private Company company;
-	@ManyToMany
+	
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name="officeAuthorizedPerson",
 	joinColumns=@JoinColumn(name="officeId"),
 	inverseJoinColumns=@JoinColumn(name="personId"))
@@ -33,13 +45,43 @@ public class Office implements Serializable  {
 	private Set<AuthorizedPerson> authorizedPersons;	
 	
 	
-	public Office(Address address, Company company) {
+	public Office(Address address) {
 		super();
 		this.address = address;
-		this.company = company;
 	}
 
 	public void addAuthorizedPerson(AuthorizedPerson a) {
 		this.authorizedPersons.add(a);
 	}
+	
+	public void removeAuthorizedPerson(AuthorizedPerson a) {
+		this.authorizedPersons.remove(a);
+	}
+
+	public void setCompany(Company c) {
+		this.company = c;
+	}
+
+	public long getOfficeId() {
+		return officeId;
+	}
+
+	public void setOfficeId(long officeId) {
+		this.officeId = officeId;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+	
+	
+	
 }

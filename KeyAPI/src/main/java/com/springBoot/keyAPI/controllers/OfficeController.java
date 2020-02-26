@@ -1,6 +1,7 @@
 package com.springBoot.keyAPI.controllers;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,49 +14,67 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springBoot.keyAPI.domain.*;
+import com.springBoot.keyAPI.services.CompanyService;
 import com.springBoot.keyAPI.services.OfficeService;
 
 @RestController
-@RequestMapping(value="/api/office")
+@RequestMapping(value="/api")
 public class OfficeController {
 	
 	@Autowired
 	private OfficeService service;
 	
-	@GetMapping(value="/getAll")
-	public List<Office> getAllOffices(){
-		return service.getAll();
+	@Autowired
+	private CompanyService companyService;
+	
+	@GetMapping(value="/companies/{id}/offices")
+	public Set<Office> findByCompanyId(@PathVariable long id){
+		Company c = companyService.getById(id);
+		if (c != null) {
+			return c.getOffices();
+		}
+		return null;
 	}
 	
-	@GetMapping(value="/{id}")
+	@PostMapping(value="/companies/{id}/offices")
+	public boolean addOffice(@PathVariable long id,
+			@RequestBody Office o) {
+		 Company c = companyService.getById(id);
+		 if(c != null) {
+			 o.setCompany(c);
+			 return service.add(o);
+		 }
+		 return false;
+	}
+	
+	
+	@PutMapping("/companies/{companyId}/offices/{officeId}")
+	public boolean updateOffice(@PathVariable long companyId,
+			@PathVariable long officeId,
+			@RequestBody Office o) {
+		Company c = this.companyService.getById(companyId);
+		if(c != null) {
+			Office toBeUpdated = this.service.getById(officeId);
+			toBeUpdated.setAddress(o.getAddress());
+			return service.add(toBeUpdated);
+		}
+		return false;
+	}
+	
+	@GetMapping(value="/offices/{id}")
 	public Office findById(@PathVariable long id) {
 		return service.getById(id);
 	}
 	
-	@PostMapping(value="/add")
-	public boolean addOffice(@RequestBody Office o) {
-		return service.add(o);
-	}
-	
-	@DeleteMapping(value="/delete/{id}")
-	public boolean removeOffice(@PathVariable long id) {
+	@DeleteMapping(value="/offices/{id}")
+	public boolean removeOffice(@PathVariable long id) {	
 		return service.remove(id);
 	}
 	
-	@PutMapping(value="/update")
-	public boolean updateOffice(@RequestBody Office o) {
-		return service.update(o);
+	@GetMapping(value="/offices")
+	public List<Office> getAllOffices(){
+		
+		return service.getAll();
 	}
 	
-	@DeleteMapping(value="/deleteAll")
-	public boolean removeAllOffices() {
-		return service.removeAll();
-	}
-	
-	@PostMapping(value="{id}/authorizedPerson")
-	public boolean addAuthorizedPersonToOffice(@PathVariable long id,@RequestBody AuthorizedPerson a) {
-		Office o = service.getById(id);
-		o.addAuthorizedPerson(a);
-		return service.update(o);
-	}
 }
