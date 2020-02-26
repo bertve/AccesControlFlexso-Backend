@@ -8,12 +8,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
-import com.springBoot.keyAPI.domain.AuthorizedPerson;
 import com.springBoot.keyAPI.domain.Company;
 import com.springBoot.keyAPI.services.CompanyService;
-import com.springBoot.keyAPI.domain.Office;
 
 import java.util.List;
 
