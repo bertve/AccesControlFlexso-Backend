@@ -7,14 +7,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
 @Table
 public class AuthorizedPerson extends Audit implements Serializable {
 
@@ -32,7 +25,47 @@ public class AuthorizedPerson extends Audit implements Serializable {
 		this.email = email;
 		this.offices = new HashSet<>();
 	}
-	
-	
 
+	public AuthorizedPerson() {
+	}
+
+	public long getPersonId() {
+		return personId;
+	}
+
+	public void setPersonId(long personId) {
+		this.personId = personId;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Set<Office> getOffices() {
+		return offices;
+	}
+
+	public void setOffices(Set<Office> offices) {
+		this.offices = offices;
+	}
 }

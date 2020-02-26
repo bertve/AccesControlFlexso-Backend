@@ -9,17 +9,10 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springBoot.keyAPI.domain.Address;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
 @Table
 public class Office extends Audit implements Serializable  {
 	private static final long serialVersionUID = 1L;
@@ -42,9 +35,11 @@ public class Office extends Audit implements Serializable  {
 	joinColumns=@JoinColumn(name="officeId"),
 	inverseJoinColumns=@JoinColumn(name="personId"))
 	@JoinColumn()
-	private Set<AuthorizedPerson> authorizedPersons;	
-	
-	
+	private Set<AuthorizedPerson> authorizedPersons;
+
+	public Office() {
+	}
+
 	public Office(Address address) {
 		super();
 		this.address = address;

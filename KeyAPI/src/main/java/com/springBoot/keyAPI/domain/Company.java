@@ -7,14 +7,9 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
 @Table
 public class Company extends Audit implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -31,14 +26,31 @@ public class Company extends Audit implements Serializable {
 		super();
 		this.name = name;
 		this.offices = new HashSet<>();
-	} 
-	
+	}
+
+	public Company() {
+	}
+
 	public Set<Office> getOffices() {
 		return offices;
 	}
 	public void setOffices(Set<Office> offices) {
 		this.offices = offices;
 	}
-	
-	
+
+	public long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		this.companyId = companyId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

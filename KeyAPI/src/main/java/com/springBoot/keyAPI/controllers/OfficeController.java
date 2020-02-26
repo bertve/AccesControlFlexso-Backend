@@ -3,6 +3,7 @@ package com.springBoot.keyAPI.controllers;
 import java.util.List;
 import java.util.Set;
 
+import com.springBoot.keyAPI.services.AuthorizedPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,9 @@ public class OfficeController {
 	
 	@Autowired
 	private CompanyService companyService;
+
+	@Autowired
+	private AuthorizedPersonService personService;
 	
 	@GetMapping(value="/companies/{id}/offices")
 	public Set<Office> findByCompanyId(@PathVariable long id){
@@ -73,8 +77,29 @@ public class OfficeController {
 	
 	@GetMapping(value="/offices")
 	public List<Office> getAllOffices(){
-		
 		return service.getAll();
 	}
-	
+
+	@PostMapping(value="/offices/{officeId}")
+	public boolean addPersonToOffice(
+									 @PathVariable long officeId,
+									 @RequestBody AuthorizedPerson person){
+		Office o = service.getById(officeId);
+		AuthorizedPerson a = personService.getById(person.getPersonId());
+		System.out.println(o.toString());
+		System.out.println(a.toString());
+		o.addAuthorizedPerson(a);
+		return this.service.update(o);
+	}
+
+	@DeleteMapping(value="/offices/{officeId}")
+	public boolean removePersonFromOffice(@PathVariable long officeId,
+										  @RequestBody AuthorizedPerson person){
+		Office o = service.getById(officeId);
+		AuthorizedPerson a = personService.getById(person.getPersonId());
+		System.out.println(o.toString());
+		System.out.println(a.toString());
+		o.removeAuthorizedPerson(a);
+		return this.service.update(o);
+	}
 }
