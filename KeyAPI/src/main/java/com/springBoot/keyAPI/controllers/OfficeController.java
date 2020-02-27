@@ -92,7 +92,7 @@ public class OfficeController {
 		return this.service.update(o);
 	}
 
-	@DeleteMapping(value="/offices/{officeId}")
+	@DeleteMapping(value="/offices/{officeId}/authorizedPersons")
 	public boolean removePersonFromOffice(@PathVariable long officeId,
 										  @RequestBody AuthorizedPerson person){
 		Office o = service.getById(officeId);
@@ -101,5 +101,11 @@ public class OfficeController {
 		System.out.println(a.toString());
 		o.removeAuthorizedPerson(a);
 		return this.service.update(o);
+	}
+
+	@GetMapping(value="/offices/{id}/authorizedPersons")
+	public Set<AuthorizedPerson> getAuthorizedPersonsByOfficeId(@PathVariable long id){
+		Office o = this.service.getById(id);
+		return o.getAuthorizedPersons();
 	}
 }

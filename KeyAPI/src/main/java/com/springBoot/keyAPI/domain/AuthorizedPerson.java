@@ -1,5 +1,7 @@
 package com.springBoot.keyAPI.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +19,7 @@ public class AuthorizedPerson extends Audit implements Serializable {
 	private long personId;
 	private String firstName, lastName,email;
 	@ManyToMany(mappedBy="authorizedPersons",cascade = CascadeType.PERSIST)
+	@JsonIgnore
 	public Set<Office> offices;
 	public AuthorizedPerson(String firstName, String lastName, String email) {
 		super();

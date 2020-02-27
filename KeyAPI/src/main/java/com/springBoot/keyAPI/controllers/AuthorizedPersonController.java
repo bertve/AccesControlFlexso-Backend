@@ -53,7 +53,7 @@ public class AuthorizedPersonController {
 		return service.removeAll();
 	}
 
-	@GetMapping("{id}/offices")
+	@GetMapping("/{id}/offices")
 	public Set<Office> getAllOfficesWithPersonId(@PathVariable long id){
 		return service.getById(id).getOffices();
 	}
