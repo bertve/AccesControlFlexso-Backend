@@ -12,7 +12,7 @@ is an API that grants access to authorized personnel for a specific building.
 
 ## Authors
 
-* **Bert Van Eeckhoutte** (https://github.com/bertve)
+* [Bert Van Eeckhoutte](https://github.com/bertve)
 
 ## License
 
