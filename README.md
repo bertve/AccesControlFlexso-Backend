@@ -1,11 +1,6 @@
 # AccesControlFlexso-Backend
 is an API that grants access to authorized personnel for a specific building.
 
-### Prerequisites
-
-* NFC support
-* Android Beam
-
 ## Built With
 
 * [Maven](https://maven.apache.org/) - Dependency Management
