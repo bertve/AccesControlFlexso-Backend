@@ -2,8 +2,11 @@ package com.springBoot.keyAPI.controllers;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.springBoot.keyAPI.domain.Office;
+import com.springBoot.keyAPI.domain.dto.CompanyDTO;
+import com.springBoot.keyAPI.domain.dto.OfficeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,8 +57,9 @@ public class AuthorizedPersonController {
 	}
 
 	@GetMapping("/{id}/offices")
-	public Set<Office> getAllOfficesWithPersonId(@PathVariable long id){
-		return service.getById(id).getOffices();
+	public List<OfficeDTO> getAllOfficesWithPersonId(@PathVariable long id){
+		Set<Office> offices = service.getById(id).getOffices();
+		return offices.stream().map(o -> new OfficeDTO(o.getOfficeId(),o.getAddress(),new CompanyDTO(o.getCompany().getCompanyId(),o.getCompany().getName()))).collect(Collectors.toList());
 	}
 	
 }

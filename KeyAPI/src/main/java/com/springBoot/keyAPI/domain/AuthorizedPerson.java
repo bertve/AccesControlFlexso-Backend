@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -17,7 +18,10 @@ public class AuthorizedPerson extends Audit implements Serializable {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private long personId;
-	private String firstName, lastName,email;
+	private String firstName, lastName;
+	@NotNull
+	@Column(unique=true)
+	private String email;
 	@ManyToMany(mappedBy="authorizedPersons",cascade = CascadeType.PERSIST)
 	@JsonIgnore
 	public Set<Office> offices;

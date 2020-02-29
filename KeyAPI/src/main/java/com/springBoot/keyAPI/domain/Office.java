@@ -38,6 +38,7 @@ public class Office extends Audit implements Serializable  {
 	@JoinColumn()
 	private Set<AuthorizedPerson> authorizedPersons;
 
+
 	public Office() {
 	}
 

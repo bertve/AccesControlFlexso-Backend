@@ -1,5 +1,8 @@
 package com.springBoot.keyAPI.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,10 +28,10 @@ public class Company extends Audit implements Serializable {
 	public Company(String name) {
 		super();
 		this.name = name;
-		this.offices = new HashSet<>();
 	}
 
 	public Company() {
+		this.offices = new HashSet<>();
 	}
 
 	public Set<Office> getOffices() {
