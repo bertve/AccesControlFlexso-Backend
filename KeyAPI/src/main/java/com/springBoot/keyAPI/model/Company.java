@@ -1,7 +1,5 @@
-package com.springBoot.keyAPI.domain;
+package com.springBoot.keyAPI.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.HashSet;

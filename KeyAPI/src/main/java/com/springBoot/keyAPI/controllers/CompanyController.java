@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.springBoot.keyAPI.domain.Company;
+import com.springBoot.keyAPI.model.Company;
 import com.springBoot.keyAPI.services.CompanyService;
 
 import java.util.List;

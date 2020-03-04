@@ -3,7 +3,7 @@ package com.springBoot.keyAPI.controllers;
 import java.util.List;
 import java.util.Set;
 
-import com.springBoot.keyAPI.services.AuthorizedPersonService;
+import com.springBoot.keyAPI.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springBoot.keyAPI.domain.*;
+import com.springBoot.keyAPI.model.*;
 import com.springBoot.keyAPI.services.CompanyService;
 import com.springBoot.keyAPI.services.OfficeService;
 
@@ -29,7 +29,7 @@ public class OfficeController {
 	private CompanyService companyService;
 
 	@Autowired
-	private AuthorizedPersonService personService;
+	private UserService personService;
 	
 	@GetMapping(value="/companies/{id}/offices")
 	public Set<Office> findByCompanyId(@PathVariable long id){
@@ -83,29 +83,25 @@ public class OfficeController {
 	@PostMapping(value="/offices/{officeId}")
 	public boolean addPersonToOffice(
 									 @PathVariable long officeId,
-									 @RequestBody AuthorizedPerson person){
+									 @RequestBody User person){
 		Office o = service.getById(officeId);
-		AuthorizedPerson a = personService.getById(person.getPersonId());
-		System.out.println(o.toString());
-		System.out.println(a.toString());
+		User a = personService.getById(person.getUserId());
 		o.addAuthorizedPerson(a);
 		return this.service.update(o);
 	}
 
 	@DeleteMapping(value="/offices/{officeId}/authorizedPersons")
 	public boolean removePersonFromOffice(@PathVariable long officeId,
-										  @RequestBody AuthorizedPerson person){
+										  @RequestBody User person){
 		Office o = service.getById(officeId);
-		AuthorizedPerson a = personService.getById(person.getPersonId());
-		System.out.println(o.toString());
-		System.out.println(a.toString());
+		User a = personService.getById(person.getUserId());
 		o.removeAuthorizedPerson(a);
 		return this.service.update(o);
 	}
 
 	@GetMapping(value="/offices/{id}/authorizedPersons")
-	public Set<AuthorizedPerson> getAuthorizedPersonsByOfficeId(@PathVariable long id){
+	public Set<User> getAuthorizedPersonsByOfficeId(@PathVariable long id){
 		Office o = this.service.getById(id);
-		return o.getAuthorizedPersons();
+		return o.getUsers();
 	}
 }

@@ -1,4 +1,4 @@
-package com.springBoot.keyAPI.domain;
+package com.springBoot.keyAPI.model;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -11,7 +11,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.springBoot.keyAPI.domain.Address;
 
 @Entity
 @Table
@@ -32,11 +31,11 @@ public class Office extends Audit implements Serializable  {
 	private Company company;
 	
 	@ManyToMany(cascade = CascadeType.PERSIST)
-	@JoinTable(name="officeAuthorizedPerson",
+	@JoinTable(name="officeUsers",
 	joinColumns=@JoinColumn(name="officeId"),
-	inverseJoinColumns=@JoinColumn(name="personId"))
+	inverseJoinColumns=@JoinColumn(name="userId"))
 	@JoinColumn()
-	private Set<AuthorizedPerson> authorizedPersons;
+	private Set<User> users;
 
 
 	public Office() {
@@ -45,15 +44,15 @@ public class Office extends Audit implements Serializable  {
 	public Office(Address address) {
 		super();
 		this.address = address;
-		this.authorizedPersons = new HashSet<>();
+		this.users = new HashSet<>();
 	}
 
-	public void addAuthorizedPerson(AuthorizedPerson a) {
-		this.authorizedPersons.add(a);
+	public void addAuthorizedPerson(User a) {
+		this.users.add(a);
 	}
 	
-	public void removeAuthorizedPerson(AuthorizedPerson a) {
-		this.authorizedPersons.remove(a);
+	public void removeAuthorizedPerson(User a) {
+		this.users.remove(a);
 	}
 
 	public void setCompany(Company c) {
@@ -80,11 +79,11 @@ public class Office extends Audit implements Serializable  {
 		return company;
 	}
 
-	public Set<AuthorizedPerson> getAuthorizedPersons() {
-		return authorizedPersons;
+	public Set<User> getUsers() {
+		return users;
 	}
 
-	public void setAuthorizedPersons(Set<AuthorizedPerson> authorizedPersons) {
-		this.authorizedPersons = authorizedPersons;
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 }

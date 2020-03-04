@@ -7,10 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableJpaAuditing
 public class KeyApiApplication {
-
 	public static void main(String[] args) {
-		SpringApplication.run(KeyApiApplication.class, args);		
+		SpringApplication.run(KeyApiApplication.class, args);
 	}
-	
-	
 }

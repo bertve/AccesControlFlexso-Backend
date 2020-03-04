@@ -1,4 +1,4 @@
-package com.springBoot.keyAPI.domain.dto;
+package com.springBoot.keyAPI.model.dto;
 
 
 public class CompanyDTO {

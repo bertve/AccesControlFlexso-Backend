@@ -1,7 +1,6 @@
-package com.springBoot.keyAPI.domain.dto;
+package com.springBoot.keyAPI.model.dto;
 
-import com.springBoot.keyAPI.domain.Address;
-import com.springBoot.keyAPI.domain.Company;
+import com.springBoot.keyAPI.model.Address;
 
 
 public class OfficeDTO {

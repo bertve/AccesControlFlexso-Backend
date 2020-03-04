@@ -1,4 +1,4 @@
-package com.springBoot.keyAPI.domain;
+package com.springBoot.keyAPI.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

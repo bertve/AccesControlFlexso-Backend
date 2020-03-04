@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springBoot.keyAPI.domain.Company;
+import com.springBoot.keyAPI.model.Company;
 import com.springBoot.keyAPI.repository.CompanyRepository;
 
 @Service
@@ -40,8 +40,7 @@ public class CompanyService implements IService<Company>{
 	}
 
 	public Company getById(long id) {
-		Company c = companyRepo.findById(id).orElse(null);
-		return c;
+		return companyRepo.findById(id).orElse(null);
 	}
 
 	public boolean update(Company item) {
@@ -53,7 +52,7 @@ public class CompanyService implements IService<Company>{
 		this.companyRepo.deleteAll();
 		List<Company> res = new ArrayList<>();
 		companyRepo.findAll().forEach(res::add);
-		return res.isEmpty()? true:false;
+		return res.isEmpty();
 	}
 	
 }
