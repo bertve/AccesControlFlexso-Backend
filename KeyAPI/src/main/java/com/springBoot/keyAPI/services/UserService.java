@@ -51,4 +51,7 @@ public class UserService implements IService<User> {
 		return res.isEmpty();
 	}
 
+	public boolean existsByEmail(String email) {
+		return repo.existsByEmail(email);
+	}
 }

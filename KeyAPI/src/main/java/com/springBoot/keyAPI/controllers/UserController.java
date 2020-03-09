@@ -1,31 +1,25 @@
 package com.springBoot.keyAPI.controllers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.springBoot.keyAPI.model.Office;
-import com.springBoot.keyAPI.model.Role;
 import com.springBoot.keyAPI.model.dto.CompanyDTO;
 import com.springBoot.keyAPI.model.dto.OfficeDTO;
+import com.springBoot.keyAPI.model.dto.auth.UserDTO;
+import com.springBoot.keyAPI.security.CurrentUser;
+import com.springBoot.keyAPI.security.UserPrincipal;
 import com.springBoot.keyAPI.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.springBoot.keyAPI.model.User;
 import com.springBoot.keyAPI.services.UserService;
 
 @RestController
-@RequestMapping(value = "/api/authorizedPersons")
+@RequestMapping(value = "/api/users")
 public class UserController {
 
     @Autowired
@@ -65,6 +59,22 @@ public class UserController {
         Set<Office> offices = service.getById(id).getOffices();
         return offices.stream().map(o -> new OfficeDTO(o.getOfficeId(),
                 o.getAddress(), new CompanyDTO(o.getCompany().getCompanyId(), o.getCompany().getName()))).collect(Collectors.toList());
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public UserDTO getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+        UserDTO user = new UserDTO(currentUser.getId()
+                ,currentUser.getFirstName()
+                ,currentUser.getLastName()
+                ,currentUser.getUsername()
+                ,currentUser.getPassword());
+        return user;
+    }
+
+    @GetMapping("/checkEmailAvailability")
+    public boolean checkEmailAvailability(@RequestParam(value = "email") String email) {
+        return !service.existsByEmail(email);
     }
 
 }
