@@ -58,7 +58,7 @@ public class UserController {
         res.setEmail(u.getEmail());
         res.setPassword(bCryptPasswordEncoder.encode(u.getPassword()));
         if(service.update(res)){
-            return new UserDTO(res.getUserId(),res.getFirstName(),res.getLastName(),res.getEmail()u.getPassword());
+            return new UserDTO(res.getUserId(),res.getFirstName(),res.getLastName(),res.getEmail(),u.getPassword());
         }else{
             return null;
         }
