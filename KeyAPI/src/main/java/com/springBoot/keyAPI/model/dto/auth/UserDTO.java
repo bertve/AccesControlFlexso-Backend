@@ -5,6 +5,13 @@ public class UserDTO {
 
     private String firstName, lastName,email,password;
 
+    public UserDTO(long userId, String firstName, String lastName, String email) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
     public UserDTO(long userId, String firstName, String lastName, String email, String password) {
         this.userId = userId;
         this.firstName = firstName;
@@ -60,7 +67,6 @@ public class UserDTO {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }

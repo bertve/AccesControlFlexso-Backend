@@ -50,8 +50,18 @@ public class UserController {
     }
 
     @PutMapping
-    public boolean updateUser(@RequestBody User u) {
-        return service.update(u);
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public UserDTO updateUser(@RequestBody User u) {
+        User res = service.getById(u.getUserId());
+        res.setFirstName(u.getFirstName());
+        res.setLastName(u.getLastName());
+        res.setEmail(u.getEmail());
+        res.setPassword(bCryptPasswordEncoder.encode(u.getPassword()));
+        if(service.update(res)){
+            return new UserDTO(res.getUserId(),res.getFirstName(),res.getLastName(),res.getEmail()u.getPassword());
+        }else{
+            return null;
+        }
     }
 
     @GetMapping("/{id}/offices")
@@ -68,7 +78,7 @@ public class UserController {
                 ,currentUser.getFirstName()
                 ,currentUser.getLastName()
                 ,currentUser.getUsername()
-                ,currentUser.getPassword());
+                );
         return user;
     }
 

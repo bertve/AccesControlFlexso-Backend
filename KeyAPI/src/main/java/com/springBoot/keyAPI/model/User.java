@@ -29,7 +29,6 @@ public class User extends Audit implements Serializable {
 
 	@NotNull
 	@Column(unique=true)
-	@NaturalId
 	@Email
 	private String email;
 
