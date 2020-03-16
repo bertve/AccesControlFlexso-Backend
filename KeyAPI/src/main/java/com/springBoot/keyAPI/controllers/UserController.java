@@ -64,7 +64,9 @@ public class UserController {
         }
     }
 
+
     @GetMapping("/{id}/offices")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<OfficeDTO> getAllOfficesWithUserId(@PathVariable long id) {
         Set<Office> offices = service.getById(id).getOffices();
         return offices.stream().map(o -> new OfficeDTO(o.getOfficeId(),

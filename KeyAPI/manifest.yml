@@ -1,0 +1,7 @@
+applications:
+- name: key-api
+  path: target/key-api-0.0.1-SNAPSHOT.war
+  buildpack: java_buildpack
+  memory: 1024M
+  services:
+    - keyDB
