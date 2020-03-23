@@ -14,7 +14,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 
 	</parent>
-	<groupId>com.flexso.keyapi</groupId>
+	<groupId>com.springBoot.keyapi</groupId>
 	<artifactId>key-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -36,10 +36,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -113,7 +109,12 @@
 		        <activatedProperties>local</activatedProperties>
 		    </properties>
             <dependencies>
-            	<dependency>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-web</artifactId>
+				</dependency>
+
+				<dependency>
 		            <groupId>com.h2database</groupId>
 		            <artifactId>h2</artifactId>
 		            <scope>runtime</scope>
@@ -129,6 +130,31 @@
 			<properties>
 		        <activatedProperties>cf</activatedProperties>
 		    </properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-web</artifactId>
+					<exclusions>
+						<exclusion>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-starter-tomcat</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.apache.tomcat.embed</groupId>
+							<artifactId>tomcat-embed-el</artifactId>
+						</exclusion>
+						<!-- Exclude logback and SpringBoot logging, otherwise the app won't start on SAP Cloud Platform -->
+						<exclusion>
+							<artifactId>logback-classic</artifactId>
+							<groupId>ch.qos.logback</groupId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-starter-logging</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+			</dependencies>
 		    
 		</profile>
 	</profiles>
