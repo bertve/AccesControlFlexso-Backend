@@ -3,13 +3,10 @@ package com.springBoot.keyAPI.model;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -35,6 +32,7 @@ public class Office extends Audit implements Serializable  {
 	joinColumns=@JoinColumn(name="officeId"),
 	inverseJoinColumns=@JoinColumn(name="userId"))
 	@JoinColumn()
+	@JsonIgnore
 	private Set<User> users;
 
 

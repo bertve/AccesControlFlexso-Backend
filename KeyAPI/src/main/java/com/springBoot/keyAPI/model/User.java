@@ -1,14 +1,9 @@
 package com.springBoot.keyAPI.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.NaturalId;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -32,15 +27,10 @@ public class User extends Audit implements Serializable {
 	@Email
 	private String email;
 
-
 	@ManyToMany(mappedBy="users",cascade = CascadeType.PERSIST)
 	@JsonIgnore
 	public Set<Office> offices;
 
-	/**
-	 * Roles are being eagerly loaded here because
-	 * they are a fairly small collection of items for this example.
-	 */
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles", joinColumns
 			= @JoinColumn(name = "userId")
@@ -48,27 +38,36 @@ public class User extends Audit implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "roleId"))
 	private Set<Role> roles;
 
+	@OneToOne(cascade =  CascadeType.ALL)
+	@JoinColumn(unique= true, nullable=true)
+	private Company company;
+
+	public User(String firstName, String lastName, String email,String password) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		roles = new HashSet<>();
+	}
+
+	public User(String firstName, String lastName, String email,String password,Company c) {
+		this(firstName,lastName,email,password);
+		this.company = c;
+	}
+
+	public User() {
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
-	}
-
-	public User(String firstName, String lastName, String email) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-	}
-
-	public User(String firstName, String lastName, String email,String password) {
-		this(firstName,lastName,email);
-		this.password = password;
-	}
-
-	public User() {
 	}
 
 	public long getUserId() {

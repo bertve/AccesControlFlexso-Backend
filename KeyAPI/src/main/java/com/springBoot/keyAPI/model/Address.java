@@ -1,7 +1,6 @@
 package com.springBoot.keyAPI.model;
 
 import java.io.Serializable;
-
 import javax.persistence.Embeddable;
 
 @Embeddable

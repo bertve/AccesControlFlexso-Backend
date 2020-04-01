@@ -1,7 +1,6 @@
 package com.springBoot.keyAPI.model;
 
 import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -26,6 +25,11 @@ public class Role implements Serializable {
 
     public Role(RoleName role) {
         this.roleName = role;
+    }
+
+    public Role(RoleName role,String description) {
+        this(role);
+        this.description = description;
     }
 
     public Long getRoleId() {

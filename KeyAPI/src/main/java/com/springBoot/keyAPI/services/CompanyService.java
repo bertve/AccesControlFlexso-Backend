@@ -54,5 +54,9 @@ public class CompanyService implements IService<Company>{
 		companyRepo.findAll().forEach(res::add);
 		return res.isEmpty();
 	}
+
+	public Company getByName(String name){
+		return this.companyRepo.findByName(name).orElse(null);
+	}
 	
 }

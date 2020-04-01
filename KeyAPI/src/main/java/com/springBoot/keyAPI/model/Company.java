@@ -4,7 +4,6 @@ package com.springBoot.keyAPI.model;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -23,6 +22,7 @@ public class Company extends Audit implements Serializable {
 	private String name;
 	@OneToMany(mappedBy="company", cascade=CascadeType.ALL)
 	private Set<Office> offices;
+
 	public Company(String name) {
 		super();
 		this.name = name;
