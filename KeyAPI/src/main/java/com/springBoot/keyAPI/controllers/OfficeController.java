@@ -40,7 +40,7 @@ public class OfficeController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
-	@PostMapping(value="/{officeId}")
+	@PostMapping(value="/{officeId}/authorizedPersons")
 	public boolean addPersonToOffice(
 									 @PathVariable long officeId,
 									 @RequestBody User person){
