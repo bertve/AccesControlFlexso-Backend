@@ -1,23 +1,24 @@
 package com.springBoot.keyAPI.model.dto.auth;
 
+import com.springBoot.keyAPI.model.Role;
+import com.springBoot.keyAPI.model.dto.CompanyDTO;
+
+import java.util.Set;
+
 public class UserDTO {
     private long userId;
-
     private String firstName, lastName,email,password;
+    private CompanyDTO company;
+    private Set<Role> roles;
 
-    public UserDTO(long userId, String firstName, String lastName, String email) {
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
-
-    public UserDTO(long userId, String firstName, String lastName, String email, String password) {
+    public UserDTO(long userId, String firstName, String lastName, String email, String password,Set<Role> roles,CompanyDTO company) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.roles = roles;
+        this.company = company;
     }
 
     public long getUserId() {
@@ -58,6 +59,22 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public CompanyDTO getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyDTO company) {
+        this.company = company;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

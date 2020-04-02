@@ -49,12 +49,18 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_COMPANY') or hasRole('ROLE_ADMIN')")
     public UserDTO updateUser(@RequestBody User u) {
         User res = service.getById(u.getUserId());
+        if (res == null){ return null;}
+
         res.setFirstName(u.getFirstName());
         res.setLastName(u.getLastName());
         res.setEmail(u.getEmail());
         res.setPassword(bCryptPasswordEncoder.encode(u.getPassword()));
+        CompanyDTO c = null;
+        if (res.getCompany()!= null){
+            c = new CompanyDTO(res.getCompany().getCompanyId(),res.getCompany().getName());
+        }
         if(service.update(res)){
-            return new UserDTO(res.getUserId(),res.getFirstName(),res.getLastName(),res.getEmail(),u.getPassword());
+            return new UserDTO(res.getUserId(),res.getFirstName(),res.getLastName(),res.getEmail(),u.getPassword(),res.getRoles(),c);
         }else{
             return null;
         }
@@ -72,12 +78,23 @@ public class UserController {
     @GetMapping("/me")
     @PreAuthorize("hasRole('ROLE_USER')or hasRole('ROLE_COMPANY') or hasRole('ROLE_ADMIN')")
     public UserDTO getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        UserDTO user = new UserDTO(currentUser.getId()
-                ,currentUser.getFirstName()
-                ,currentUser.getLastName()
-                ,currentUser.getUsername()
-                );
-        return user;
+       User u = this.service.getById(currentUser.getId());
+       if(u == null){
+           return null;
+       }
+        CompanyDTO c = null;
+        if(u.getCompany()!= null){
+           c = new CompanyDTO(u.getCompany().getCompanyId(),u.getCompany().getName());
+        }
+        return new UserDTO(
+                u.getUserId()
+                ,u.getFirstName()
+                ,u.getLastName()
+                ,u.getEmail()
+                ,u.getPassword()
+                ,u.getRoles()
+                ,c
+        );
     }
 
     @GetMapping("/checkEmailAvailability")

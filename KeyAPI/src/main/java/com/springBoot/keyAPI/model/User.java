@@ -118,6 +118,10 @@ public class User extends Audit implements Serializable {
 		this.password = password;
 	}
 
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
