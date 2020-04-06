@@ -3,7 +3,10 @@ package com.springBoot.keyAPI.controllers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.springBoot.keyAPI.model.dto.CompanyDTO;
+import com.springBoot.keyAPI.model.dto.OfficeDTO;
 import com.springBoot.keyAPI.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,8 +38,10 @@ public class OfficeController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping
-	public List<Office> getAllOffices(){
-		return service.getAll();
+	public List<OfficeDTO> getAllOffices(){
+		List<Office> offices = service.getAll();
+		return offices.stream().map(o -> new OfficeDTO(o.getOfficeId(),
+				o.getAddress(), new CompanyDTO(o.getCompany().getCompanyId(), o.getCompany().getName()))).collect(Collectors.toList());
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
