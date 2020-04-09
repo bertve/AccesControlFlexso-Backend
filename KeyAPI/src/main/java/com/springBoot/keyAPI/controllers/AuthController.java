@@ -126,6 +126,7 @@ public class AuthController {
         return ResponseEntity.created(location).body(new ApiResponse(true, "Company registered successfully"));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/admin/signup")
     public ResponseEntity<ApiResponse> registerAdmin(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {

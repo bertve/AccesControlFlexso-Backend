@@ -1,6 +1,9 @@
 package com.springBoot.keyAPI.controllers;
 
+import com.springBoot.keyAPI.model.Address;
 import com.springBoot.keyAPI.model.Office;
+import com.springBoot.keyAPI.model.dto.CompanyDTO;
+import com.springBoot.keyAPI.model.dto.OfficeDTO;
 import com.springBoot.keyAPI.services.OfficeService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +19,7 @@ import com.springBoot.keyAPI.services.CompanyService;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,10 +52,11 @@ public class CompanyController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
 	@GetMapping(value="/{id}/offices")
-	public Set<Office> findOfficesByCompanyId(@PathVariable long id){
+	public List<OfficeDTO> findOfficesByCompanyId(@PathVariable long id){
 		Company c = service.getById(id);
 		if (c != null) {
-			return c.getOffices();
+			return c.getOffices().stream().map(o -> new OfficeDTO(o.getOfficeId(),
+					o.getAddress(), new CompanyDTO(o.getCompany().getCompanyId(), o.getCompany().getName()))).collect(Collectors.toList());
 		}
 		return null;
 	}
@@ -59,8 +64,9 @@ public class CompanyController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
 	@PostMapping(value="/{id}/offices")
 	public boolean addOffice(@PathVariable long id,
-							 @RequestBody Office o) {
+							 @RequestBody Address a) {
 		Company c = service.getById(id);
+		Office o = new Office(a);
 		if(c != null) {
 			o.setCompany(c);
 			return officeService.add(o);
