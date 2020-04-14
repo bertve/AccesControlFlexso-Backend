@@ -7,16 +7,11 @@ import java.util.stream.Collectors;
 
 import com.springBoot.keyAPI.model.dto.CompanyDTO;
 import com.springBoot.keyAPI.model.dto.OfficeDTO;
+import com.springBoot.keyAPI.model.dto.auth.UserDTO;
 import com.springBoot.keyAPI.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.springBoot.keyAPI.model.*;
 import com.springBoot.keyAPI.services.OfficeService;
 
@@ -45,12 +40,12 @@ public class OfficeController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
-	@PostMapping(value="/{officeId}/authorizedPersons")
+	@PostMapping(value="/{officeId}/authorizedPersons/{userId}")
 	public boolean addPersonToOffice(
 									 @PathVariable long officeId,
-									 @RequestBody User person){
+									 @PathVariable long userId){
 		Office o = service.getById(officeId);
-		User a = personService.getById(person.getUserId());
+		User a = personService.getById(userId);
 		if(o == null || a == null){
 			return false;
 		}
@@ -59,11 +54,11 @@ public class OfficeController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
-	@DeleteMapping(value="/{officeId}/authorizedPersons")
+	@DeleteMapping(value="/{officeId}/authorizedPersons/{userId}")
 	public boolean removePersonFromOffice(@PathVariable long officeId,
-										  @RequestBody User person){
+										  @PathVariable long userId){
 		Office o = service.getById(officeId);
-		User a = personService.getById(person.getUserId());
+		User a = personService.getById(userId);
 		if(o == null || a == null){
 			return false;
 		}
@@ -73,11 +68,73 @@ public class OfficeController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
 	@GetMapping(value="/{id}/authorizedPersons")
-	public Set<User> getAuthorizedPersonsByOfficeId(@PathVariable long id){
+	public Set<UserDTO> getAuthorizedPersonsByOfficeId(@PathVariable long id){
 		Office o = this.service.getById(id);
 		if(o == null){
-			return new HashSet<User>();
+			return new HashSet<UserDTO>();
 		}
-		return o.getUsers();
+
+		return o.getUsers().stream().map(u -> {
+			CompanyDTO c = null;
+			if(u.getCompany()!= null){
+				c = new CompanyDTO(u.getCompany().getCompanyId(),u.getCompany().getName());
+			}
+			return new UserDTO(
+					u.getUserId()
+					,u.getFirstName()
+					,u.getLastName()
+					,u.getEmail()
+					,u.getPassword()
+					,u.getRoles()
+					,c
+			);
+		}).collect(Collectors.toSet());
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
+	@GetMapping(value="/{id}/unAuthorizedPersons")
+	public Set<UserDTO> getUnAuthorizedPersonsByOfficeId(@PathVariable long id){
+		Office o = this.service.getById(id);
+
+		if(o == null){
+			return new HashSet<UserDTO>();
+		}
+
+
+		List<User> all = this.personService.getAll().stream().filter(u -> u.getRoles().stream().anyMatch(r-> r.getRoleName() == RoleName.ROLE_USER))
+				.collect(Collectors.toList());
+
+		all.removeAll(o.getUsers());
+
+
+		return all.stream().map(u -> {
+			CompanyDTO c = null;
+			if(u.getCompany()!= null){
+				c = new CompanyDTO(u.getCompany().getCompanyId(),u.getCompany().getName());
+			}
+			return new UserDTO(
+					u.getUserId()
+					,u.getFirstName()
+					,u.getLastName()
+					,u.getEmail()
+					,u.getPassword()
+					,u.getRoles()
+					,c
+			);
+		}).collect(Collectors.toSet());
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
+	@PutMapping()
+	public boolean updateOffice(
+			@RequestBody Office o) {
+		Office toBeUpdated = service.getById(o.getOfficeId());
+
+		if(toBeUpdated!= null){
+			toBeUpdated.setAddress(o.getAddress());
+			return this.service.update(toBeUpdated);
+		}
+
+		return false;
 	}
 }

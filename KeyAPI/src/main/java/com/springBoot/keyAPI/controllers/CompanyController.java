@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.springBoot.keyAPI.model.Company;
 import com.springBoot.keyAPI.services.CompanyService;
-
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,20 +79,6 @@ public class CompanyController {
 		Company c = this.service.getById(companyId);
 		if(c != null ) {
 			return officeService.remove(officeId);
-		}
-		return false;
-	}
-
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY')")
-	@PutMapping("/{companyId}/offices/{officeId}")
-	public boolean updateOffice(@PathVariable long companyId,
-								@PathVariable long officeId,
-								@RequestBody Office o) {
-		Company c = this.service.getById(companyId);
-		if(c != null) {
-			Office toBeUpdated = this.officeService.getById(officeId);
-			toBeUpdated.setAddress(o.getAddress());
-			return officeService.add(toBeUpdated);
 		}
 		return false;
 	}
