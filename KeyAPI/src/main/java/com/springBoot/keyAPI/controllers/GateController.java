@@ -18,8 +18,13 @@ public class GateController {
     @Autowired
     private OfficeService officeService;
 
-    @GetMapping("/{officeId}")
+    @GetMapping("/{officeId}/authorized")
     public List<Long> getAuthorizedIdsByOfficeId(@PathVariable("officeId")Long id){
         return this.officeService.getById(id).getUsers().stream().map(User::getUserId).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{officeId}/info")
+    public String getAdressByOfficeId(@PathVariable("officeId")Long id){
+        return this.officeService.getById(id).getAddress().addressString();
     }
 }

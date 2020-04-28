@@ -50,4 +50,10 @@ public class Address implements Serializable  {
 	public void setCountry(String country) {
 		this.country = country;
 	}
+
+    public String addressString() {
+		return this.getStreet() + ";" + this.getHouseNumber()
+				+ ";" + this.getPostalCode() + ";" + getTown()
+				+ ";" + getCountry();
+    }
 }
