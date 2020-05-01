@@ -1,5 +1,6 @@
 package com.springBoot.keyAPI.controllers;
 
+import com.google.gson.Gson;
 import com.springBoot.keyAPI.model.Key;
 import com.springBoot.keyAPI.model.KeyId;
 import com.springBoot.keyAPI.model.KeyValidation;
@@ -64,7 +65,14 @@ public class GateController {
     }
 
     @PostMapping("/validate/{token}")
-    public ResponseEntity<KeyValidation> validateKey(@PathVariable("token")String token,@RequestBody KeyId keyId){
+    public ResponseEntity<KeyValidation> validateKey(@PathVariable("token")String token,@RequestBody String keyIdString){
+        //python json string conversion
+        String formatedString = keyIdString.substring(1,keyIdString.length()-1)
+                .replace("\\","")
+                .replace("\"","'");
+        Gson gson = new Gson();
+        KeyId keyId = gson.fromJson(formatedString,KeyId.class);
+
         Key key = keyService.getById(keyId);
         if(key == null){
             return ResponseEntity.ok(new KeyValidation(false,"key does not exist",""));
