@@ -5,6 +5,7 @@ import com.springBoot.keyAPI.model.Office;
 import com.springBoot.keyAPI.model.dto.CompanyDTO;
 import com.springBoot.keyAPI.model.dto.OfficeDTO;
 import com.springBoot.keyAPI.services.OfficeService;
+import com.springBoot.keyAPI.services.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,9 @@ public class CompanyController {
 
 	@Autowired
 	private OfficeService officeService;
+
+	@Autowired
+	private UserService userService;
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping

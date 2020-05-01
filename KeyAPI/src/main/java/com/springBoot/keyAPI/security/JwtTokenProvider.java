@@ -1,12 +1,17 @@
 package com.springBoot.keyAPI.security;
 
+import com.google.gson.Gson;
+import com.springBoot.keyAPI.model.KeyValidation;
+import com.springBoot.keyAPI.model.dto.KeyRequest;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.security.*;
 import java.util.Date;
 
 @Component
@@ -62,4 +67,43 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
+    public String generateGateToken(KeyRequest req, PrivateKey privateKey){
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + 1800000);
+        Gson gson = new Gson();
+
+        String data = gson.toJson(req);
+
+        return Jwts.builder()
+                .setSubject(data)
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.RS256, privateKey)
+                .compact();
+    }
+
+    public KeyValidation validateGateToken(String token, PublicKey publicKey) {
+        String message = "Token is verified";
+        boolean succes = false;
+        String data = "";
+
+        try {
+            data = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token).getBody().getSubject();
+            succes = true;
+        } catch (SignatureException ex) {
+            message = "Invalid JWT signature";
+        } catch (MalformedJwtException ex) {
+            message = "Invalid JWT token";
+        } catch (ExpiredJwtException ex) {
+            message = "Expired JWT token";
+        } catch (UnsupportedJwtException ex) {
+            message = "Unsupported JWT token";
+        } catch (IllegalArgumentException ex) {
+            message = "JWT claims string is empty.";
+        }
+
+        return new KeyValidation(succes,message,data);
+    }
+
 }
