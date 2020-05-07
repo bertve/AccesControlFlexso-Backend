@@ -18,7 +18,7 @@ public class Key implements Serializable {
     private Long officeId;
     @Id
     private String deviceId;
-    @JsonIgnore
+
     private PublicKey publicKey;
 
     public Key() {

@@ -2,7 +2,6 @@ package com.springBoot.keyAPI.security;
 
 import com.google.gson.Gson;
 import com.springBoot.keyAPI.model.KeyValidation;
-import com.springBoot.keyAPI.model.dto.KeyRequest;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
@@ -68,21 +67,6 @@ public class JwtTokenProvider {
         return false;
     }
 
-    public String generateGateToken(KeyRequest req, PrivateKey privateKey){
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + 1800000);
-        Gson gson = new Gson();
-
-        String data = gson.toJson(req);
-
-        return Jwts.builder()
-                .setSubject(data)
-                .setIssuedAt(new Date())
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.RS256, privateKey)
-                .compact();
-    }
-
     public KeyValidation validateGateToken(String token, PublicKey publicKey) {
         String message = "Token is verified";
         boolean succes = false;
@@ -100,7 +84,7 @@ public class JwtTokenProvider {
         } catch (UnsupportedJwtException ex) {
             message = "Unsupported JWT token";
         } catch (IllegalArgumentException ex) {
-            message = "JWT claims string is empty.";
+            message = ex.getMessage();
         }
 
         return new KeyValidation(succes,message,data);

@@ -1,11 +1,10 @@
 package com.springBoot.keyAPI.controllers;
 
 import com.google.gson.Gson;
-import com.springBoot.keyAPI.model.Key;
-import com.springBoot.keyAPI.model.KeyId;
-import com.springBoot.keyAPI.model.KeyValidation;
-import com.springBoot.keyAPI.model.User;
+import com.springBoot.keyAPI.model.*;
+import com.springBoot.keyAPI.model.dto.CompanyDTO;
 import com.springBoot.keyAPI.model.dto.KeyRequest;
+import com.springBoot.keyAPI.model.dto.OfficeDTO;
 import com.springBoot.keyAPI.model.dto.auth.JwtAuthenticationResponse;
 import com.springBoot.keyAPI.security.JwtTokenProvider;
 import com.springBoot.keyAPI.services.KeyService;
@@ -16,7 +15,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,26 +48,38 @@ public class GateController {
         return this.officeService.getById(id).getAddress().addressString();
     }
 
+    @GetMapping("/gateSelectionMenu")
+    public List<OfficeDTO> getGateSelectionMenu(){
+        Comparator<OfficeDTO> companyIdComparator = Comparator.comparing(o -> o.getCompany().getCompanyId());
+        Comparator<OfficeDTO> officeIdComparator = Comparator.comparing(OfficeDTO::getOfficeId);
+        Comparator<OfficeDTO> compare = companyIdComparator.thenComparing(officeIdComparator);
 
-    @PostMapping("/genKey")
+        return this.officeService.getAll().stream().map(
+                office ->  new OfficeDTO(office.getOfficeId(),office.getAddress(),
+                        new CompanyDTO(office.getCompany().getCompanyId(),office.getCompany().getName())))
+                .sorted(compare)
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping("/persistKey")
     @PreAuthorize("hasRole('ROLE_USER')or hasRole('ROLE_COMPANY') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> generateKey(@RequestBody KeyRequest req){
-        KeyPairGeneratorRSA256 generator;
+    public Boolean persistPublicKey(@RequestBody KeyRequest req) {
+        Key key = new Key();
         try{
-            generator = new KeyPairGeneratorRSA256();
-
-            String jwt = tokenProvider.generateGateToken(req,generator.getPrivateKey());
-            Key key = new Key();
+            byte[] bytePubKey = Base64.getDecoder().decode(req.getPublicKey());
+            KeyFactory factory = KeyFactory.getInstance("RSA");
+            PublicKey publicKey = factory.generatePublic(new X509EncodedKeySpec(bytePubKey));
             key.setUserId(req.getUserId());
             key.setOfficeId(req.getOfficeId());
             key.setDeviceId(req.getDeviceId());
-            key.setPublicKey(generator.getPublicKey());
-            keyService.add(key);
-
-            return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            key.setPublicKey(publicKey);
         }
+        catch (Exception e){
+            return false;
+        }
+        System.out.println(key.toString());
+
+        return keyService.add(key);
     }
 
     @PostMapping("/validate/{token}")
@@ -77,9 +95,12 @@ public class GateController {
         if(key == null){
             return ResponseEntity.ok(new KeyValidation(false,"key does not exist",""));
         }
+        System.out.println(key.toString());
         PublicKey publicKey = key.getPublicKey();
+
         KeyValidation response = tokenProvider.validateGateToken(token,publicKey);
         return ResponseEntity.ok(response);
     }
+
 
 }

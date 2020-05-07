@@ -20,8 +20,14 @@ public class KeyService{
         return res;
     }
 
-    public void add(Key item) {
+    public Boolean add(Key item) {
+        try{
             repo.save(item);
+            return true;
+        }
+        catch(Exception e) {
+            return false;
+        }
     }
 
     public boolean remove(KeyId id) {
