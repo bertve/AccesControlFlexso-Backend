@@ -16,3 +16,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * [Spring boot application to consume HANA service on SAP CP](https://github.com/boudhayan-dev/spring-hana-cloud-foundry)
+* [Connect java servlet to hana hdi shared instance using sap cloud-foundry-trial-account](https://theremotetechie.com/2018/11/09/sap-cloud-foundry-tutorial-connect-a-java-servlet-to-a-hana-hdi-shared-instance-using-an-sap-cloud-foundry-trial-account/)
